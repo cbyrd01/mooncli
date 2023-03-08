@@ -14,16 +14,17 @@ import moonrakerpy as moonpy
 
 class MoonCLI(object):
 
-    def __init__(self, ip="127.0.0.1"):
+    def __init__(self, method="http", ip="127.0.0.1"):
         # Instantiate a `MoonrakerPrinter` object using the web/IP address of the target
         # Moonraker installation.
-        self._url = "http://" + ip + "/"
+        self._method = method
+        self._url = self._method + "://" + ip + "/"
         self._printer = moonpy.MoonrakerPrinter(self._url)
 
     def gcode(self, *gcode):
         code = ' '.join(gcode)
         print(f"Sending G-code command: {code} to {self._url}...")
-        # printer.send_gcode(command)
+        self._printer.send_gcode(code)
 
     def settemp(self, heater, temp):
         print(f"setting {heater} to {temp}")
