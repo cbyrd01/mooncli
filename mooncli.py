@@ -12,29 +12,34 @@ import fire
 import moonrakerpy as moonpy
 
 
-def gcode(command):
-    print(f"Sending G-code command: {command}...")
-    # printer.send_gcode(command)
+class MoonCLI(object):
 
+    def __init__(self, ip="127.0.0.1"):
+        # Instantiate a `MoonrakerPrinter` object using the web/IP address of the target
+        # Moonraker installation.
+        self._url = "http://" + ip + "/"
+        self._printer = moonpy.MoonrakerPrinter(self._url)
 
-def settemp(heater, temp):
-    print(f"setting {heater} to {temp}")
-    # if heater == 'extruder':
-    # printer.set_extruder_temp(0)
-    # elif heater == 'bed':
-    # printer.set_bed_temp(0)
+    def gcode(self, *gcode):
+        code = ' '.join(gcode)
+        print(f"Sending G-code command: {code} to {self._url}...")
+        # printer.send_gcode(command)
 
+    def settemp(self, heater, temp):
+        print(f"setting {heater} to {temp}")
+        # if heater == 'extruder':
+        # printer.set_extruder_temp(0)
+        # elif heater == 'bed':
+        # printer.set_bed_temp(0)
 
-def gettemp(heater):
-    print(f"Getting {heater} temp")
-    # if heater == 'extruder':
-    # printer.query_temperatures()
-    # elif heater == 'bed':
-    # printer.query_temperatures()
+    def gettemp(self, heater):
+        print(f"Getting {heater} temp")
+        # if heater == 'extruder':
+        # printer.query_temperatures()
+        # elif heater == 'bed':
+        # printer.query_temperatures()
 
 
 if __name__ == "__main__":
-    # Instantiate a `MoonrakerPrinter` object using the web/IP address of the target
-    # Moonraker installation.
-    printer = moonpy.MoonrakerPrinter("http://192.168.1.54/")
-    fire.Fire()
+
+    fire.Fire(MoonCLI)
